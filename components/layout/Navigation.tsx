@@ -38,7 +38,7 @@ export default function Navigation() {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? 'bg-black/80 backdrop-blur-lg border-b border-white/5'
+          ? 'bg-[#0c0a1a]/85 backdrop-blur-lg border-b border-purple-500/8'
           : 'bg-transparent'
       }`}
     >
@@ -71,13 +71,13 @@ export default function Navigation() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 8 }}
                     transition={{ duration: 0.15 }}
-                    className="absolute top-full left-0 mt-2 w-56 bg-gray-900 rounded-lg border border-white/10 overflow-hidden shadow-2xl"
+                    className="absolute top-full left-0 mt-2 w-56 bg-[#181432] rounded-lg border border-purple-500/15 overflow-hidden shadow-2xl"
                   >
                     {navigation.solutions.map((item) => (
                       <Link
                         key={item.name}
                         href={item.href}
-                        className="block px-4 py-3 text-sm text-gray-400 hover:bg-white/5 hover:text-white transition-colors"
+                        className="block px-4 py-3 text-sm text-gray-400 hover:bg-purple-500/10 hover:text-white transition-colors"
                       >
                         {item.name}
                       </Link>
@@ -105,13 +105,13 @@ export default function Navigation() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 8 }}
                     transition={{ duration: 0.15 }}
-                    className="absolute top-full left-0 mt-2 w-56 bg-gray-900 rounded-lg border border-white/10 overflow-hidden shadow-2xl"
+                    className="absolute top-full left-0 mt-2 w-56 bg-[#181432] rounded-lg border border-purple-500/15 overflow-hidden shadow-2xl"
                   >
                     {navigation.products.map((item) => (
                       <Link
                         key={item.name}
                         href={item.href}
-                        className="block px-4 py-3 text-sm text-gray-400 hover:bg-white/5 hover:text-white transition-colors"
+                        className="block px-4 py-3 text-sm text-gray-400 hover:bg-purple-500/10 hover:text-white transition-colors"
                       >
                         {item.name}
                       </Link>
@@ -154,7 +154,7 @@ export default function Navigation() {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.2 }}
-            className="md:hidden bg-black/95 backdrop-blur-lg border-t border-white/5"
+            className="md:hidden bg-[#0c0a1a]/95 backdrop-blur-lg border-t border-purple-500/8"
           >
             <div className="px-4 py-6 space-y-4">
               <div>

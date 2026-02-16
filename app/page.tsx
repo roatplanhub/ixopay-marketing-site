@@ -35,7 +35,7 @@ function RoutingFlow() {
   const r = routes[activeRoute];
 
   return (
-    <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-[#0a0b0f] p-6 md:p-8">
+    <div className="relative rounded-2xl overflow-hidden visual-surface p-6 md:p-8">
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <span className="text-xs text-gray-500 uppercase tracking-widest font-medium">Smart Routing Engine</span>
@@ -48,7 +48,7 @@ function RoutingFlow() {
       {/* Flow visualization */}
       <div className="flex items-center justify-between gap-3 mb-8">
         {/* Step 1: Transaction */}
-        <div className="flex-1 bg-white/[0.04] border border-white/10 rounded-xl p-4 text-center">
+        <div className="flex-1 bg-purple-500/[0.06] border border-purple-500/10 rounded-xl p-4 text-center">
           <div className="text-[10px] text-gray-500 uppercase tracking-wider mb-2">Transaction</div>
           <AnimatePresence mode="wait">
             <motion.div
@@ -90,7 +90,7 @@ function RoutingFlow() {
         />
 
         {/* Step 3: Optimal PSP */}
-        <div className="flex-1 bg-white/[0.04] border border-white/10 rounded-xl p-4 text-center">
+        <div className="flex-1 bg-purple-500/[0.06] border border-purple-500/10 rounded-xl p-4 text-center">
           <div className="text-[10px] text-gray-500 uppercase tracking-wider mb-2">Routed To</div>
           <AnimatePresence mode="wait">
             <motion.div
@@ -117,7 +117,7 @@ function RoutingFlow() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3, delay: 0.7 }}
-          className="flex items-center gap-2 px-4 py-2.5 bg-white/[0.03] rounded-lg border border-white/5"
+          className="flex items-center gap-2 px-4 py-2.5 bg-purple-500/[0.04] rounded-lg border border-purple-500/8"
         >
           <RefreshCw className="w-3 h-3 text-indigo-400 flex-shrink-0" />
           <span className="text-xs text-gray-400">{r.reason}</span>
@@ -176,8 +176,8 @@ function LiveDashboard() {
   const barHeights = [65, 72, 58, 80, 75, 88, 82, 91, 85, 78, 92, 87];
 
   return (
-    <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-[#0a0b0f]">
-      <div className="flex items-center justify-between px-5 py-3 border-b border-white/5 bg-white/[0.02]">
+    <div className="relative rounded-2xl overflow-hidden visual-surface">
+      <div className="flex items-center justify-between px-5 py-3 border-b border-purple-500/8 bg-purple-500/[0.03]">
         <span className="text-xs text-gray-500 uppercase tracking-widest font-medium">Payment Analytics</span>
         <div className="flex items-center gap-1.5">
           <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 pulse-subtle" />
@@ -188,22 +188,22 @@ function LiveDashboard() {
       <div className="p-5">
         {/* Stats */}
         <div className="grid grid-cols-3 gap-4 mb-5">
-          <div className="bg-white/[0.03] rounded-lg p-3 border border-white/5">
+          <div className="bg-purple-500/[0.04] rounded-lg p-3 border border-purple-500/8">
             <div className="text-[10px] text-gray-500 uppercase tracking-wider mb-1">Approval Rate</div>
             <div className="text-xl font-bold text-emerald-400 tabular-nums">{approvalRate.toFixed(1)}%</div>
           </div>
-          <div className="bg-white/[0.03] rounded-lg p-3 border border-white/5">
+          <div className="bg-purple-500/[0.04] rounded-lg p-3 border border-purple-500/8">
             <div className="text-[10px] text-gray-500 uppercase tracking-wider mb-1">Transactions</div>
             <div className="text-xl font-bold text-white tabular-nums">{volume.toLocaleString()}</div>
           </div>
-          <div className="bg-white/[0.03] rounded-lg p-3 border border-white/5">
+          <div className="bg-purple-500/[0.04] rounded-lg p-3 border border-purple-500/8">
             <div className="text-[10px] text-gray-500 uppercase tracking-wider mb-1">Revenue Saved</div>
             <div className="text-xl font-bold text-white">$48.2K</div>
           </div>
         </div>
 
         {/* Mini chart */}
-        <div className="bg-white/[0.03] rounded-lg p-3 border border-white/5 mb-5">
+        <div className="bg-purple-500/[0.04] rounded-lg p-3 border border-purple-500/8 mb-5">
           <div className="flex items-end justify-between h-16 gap-1">
             {barHeights.map((h, i) => (
               <motion.div
@@ -224,7 +224,7 @@ function LiveDashboard() {
 
         {/* Transaction feed */}
         <div>
-          <div className="grid grid-cols-[1fr_70px_36px_70px_58px] gap-2 px-2 py-1.5 text-[9px] text-gray-600 uppercase tracking-wider border-b border-white/5">
+          <div className="grid grid-cols-[1fr_70px_36px_70px_58px] gap-2 px-2 py-1.5 text-[9px] text-gray-600 uppercase tracking-wider border-b border-purple-500/10">
             <span>Transaction</span>
             <span>Amount</span>
             <span>Rgn</span>
@@ -239,7 +239,7 @@ function LiveDashboard() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 8 }}
                 transition={{ duration: 0.3, delay: i * 0.04 }}
-                className="grid grid-cols-[1fr_70px_36px_70px_58px] gap-2 px-2 py-2 text-[11px] border-b border-white/[0.03]"
+                className="grid grid-cols-[1fr_70px_36px_70px_58px] gap-2 px-2 py-2 text-[11px] border-b border-purple-500/[0.06]"
               >
                 <span className="text-gray-400 font-mono">{txn.id}</span>
                 <span className="text-white font-medium">{txn.amount}</span>
@@ -269,7 +269,7 @@ function OrchestrationVisual() {
   ];
 
   return (
-    <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-[#0a0b0f] p-6 md:p-8">
+    <div className="relative rounded-2xl overflow-hidden visual-surface p-6 md:p-8">
       <div className="flex items-center justify-between mb-8">
         <span className="text-xs text-gray-500 uppercase tracking-widest font-medium">Transaction Lifecycle</span>
       </div>
@@ -284,7 +284,7 @@ function OrchestrationVisual() {
             transition={{ duration: 0.4, delay: i * 0.1 }}
             className="relative"
           >
-            <div className="bg-white/[0.04] border border-white/10 rounded-xl p-3 text-center hover:border-indigo-500/30 transition-colors">
+            <div className="bg-purple-500/[0.06] border border-purple-500/10 rounded-xl p-3 text-center hover:border-indigo-500/30 transition-colors">
               <div className="w-8 h-8 rounded-full bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center mx-auto mb-2">
                 <span className="text-xs font-bold text-indigo-400">{i + 1}</span>
               </div>
@@ -297,7 +297,7 @@ function OrchestrationVisual() {
                 whileInView={{ scaleX: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.3, delay: 0.1 + i * 0.1 }}
-                className="hidden md:block absolute top-1/2 -right-3 w-3 h-px bg-white/10 origin-left"
+                className="hidden md:block absolute top-1/2 -right-3 w-3 h-px bg-purple-500/20 origin-left"
               />
             )}
           </motion.div>
@@ -348,7 +348,7 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen page-base">
 
       {/* ═══════════════════ HERO ═══════════════════ */}
       <section className="relative min-h-screen flex items-center justify-center pt-16">
@@ -392,7 +392,7 @@ export default function Home() {
                 href="/solutions"
                 variant="secondary"
                 size="lg"
-                className="bg-white/5 border-white/10 text-white hover:bg-white/10 border"
+                className="bg-purple-500/[0.06] border-purple-500/15 text-white hover:bg-purple-500/10 border"
               >
                 Explore solutions
               </Button>
@@ -402,7 +402,7 @@ export default function Home() {
       </section>
 
       {/* ═══════════════════ TRUSTED BY ═══════════════════ */}
-      <section className="py-20 border-t border-white/5">
+      <section className="py-20 border-t section-divide">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.p
             initial="hidden"
@@ -427,7 +427,7 @@ export default function Home() {
                 key={i}
                 variants={fadeUp}
                 custom={i * 0.03}
-                className="py-6 px-4 bg-white/[0.04] border border-white/10 rounded-lg flex items-center justify-center hover:bg-white/[0.07] transition-colors"
+                className="py-6 px-4 card-surface rounded-lg flex items-center justify-center"
               >
                 <span className="text-gray-300 text-sm font-medium">{client}</span>
               </motion.div>
@@ -437,7 +437,7 @@ export default function Home() {
       </section>
 
       {/* ═══════════════════ METRICS ═══════════════════ */}
-      <section className="py-24 border-t border-white/5">
+      <section className="py-24 border-t section-divide">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial="hidden"
@@ -464,7 +464,7 @@ export default function Home() {
       </section>
 
       {/* ═══════════════════ FIVE PILLARS ═══════════════════ */}
-      <section className="py-32 border-t border-white/5">
+      <section className="py-32 border-t section-divide">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial="hidden"
@@ -522,7 +522,7 @@ export default function Home() {
                 custom={i * 0.05}
                 className="group"
               >
-                <div className="h-full bg-white/[0.03] border border-white/10 rounded-2xl p-6 hover:bg-white/[0.06] hover:border-indigo-500/20 transition-all duration-300">
+                <div className="h-full card-surface rounded-2xl p-6 hover:border-indigo-500/20 transition-all duration-300">
                   <div className="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center mb-5 group-hover:bg-indigo-500/20 transition-colors">
                     <pillar.icon className="w-5 h-5 text-indigo-400" />
                   </div>
@@ -549,7 +549,7 @@ export default function Home() {
       </section>
 
       {/* ═══════════════════ THREE PILLARS — TABBED ═══════════════════ */}
-      <section className="py-32 border-t border-white/5">
+      <section className="py-32 border-t section-divide">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial="hidden"
@@ -568,7 +568,7 @@ export default function Home() {
           </motion.div>
 
           {/* Tabs */}
-          <div className="flex gap-1 mb-12 border-b border-white/10">
+          <div className="flex gap-1 mb-12 border-b border-purple-500/15">
             {pillars.map((pillar, i) => (
               <button
                 key={i}
@@ -624,7 +624,7 @@ export default function Home() {
       </section>
 
       {/* ═══════════════════ HOW IT WORKS — ORCHESTRATION FLOW ═══════════════════ */}
-      <section className="py-32 border-t border-white/5">
+      <section className="py-32 border-t section-divide">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial="hidden"
@@ -654,7 +654,7 @@ export default function Home() {
                     custom={0.1 + i * 0.05}
                     className="flex items-center gap-3"
                   >
-                    <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/10 flex items-center justify-center flex-shrink-0">
+                    <div className="w-8 h-8 rounded-lg bg-purple-500/[0.08] border border-purple-500/15 flex items-center justify-center flex-shrink-0">
                       <item.icon className="w-4 h-4 text-indigo-400" />
                     </div>
                     <span className="text-sm text-gray-400">{item.text}</span>
@@ -677,7 +677,7 @@ export default function Home() {
       </section>
 
       {/* ═══════════════════ AGENTIC COMMERCE CTA ═══════════════════ */}
-      <section className="py-32 border-t border-white/5">
+      <section className="py-32 border-t section-divide">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial="hidden"
@@ -706,7 +706,7 @@ export default function Home() {
       </section>
 
       {/* ═══════════════════ TESTIMONIAL ═══════════════════ */}
-      <section className="py-24 border-t border-white/5">
+      <section className="py-24 border-t section-divide">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial="hidden"
@@ -730,7 +730,7 @@ export default function Home() {
       </section>
 
       {/* ═══════════════════ FINAL CTA ═══════════════════ */}
-      <section className="py-32 border-t border-white/5 relative">
+      <section className="py-32 border-t section-divide relative">
         <div className="absolute inset-0 hero-gradient opacity-50" />
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <motion.div
@@ -763,7 +763,7 @@ export default function Home() {
                 href="/solutions"
                 variant="secondary"
                 size="lg"
-                className="bg-white/5 border-white/10 text-white hover:bg-white/10 border"
+                className="bg-purple-500/[0.06] border-purple-500/15 text-white hover:bg-purple-500/10 border"
               >
                 Explore solutions
               </Button>
