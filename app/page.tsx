@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Shield, Zap, CheckCircle, Globe, Lock, BarChart3, RefreshCw } from 'lucide-react';
+import { ArrowRight, Shield, Zap, CheckCircle, Globe, Lock, BarChart3, RefreshCw, Brain, Network, ShieldCheck } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Button from '@/components/ui/Button';
 
@@ -365,20 +365,20 @@ export default function Home() {
               custom={0}
               className="text-5xl md:text-7xl lg:text-[5.5rem] font-bold text-white mb-8 leading-[1.08] tracking-tight"
             >
-              The era of agentic
+              Payment infrastructure
               <br />
               <span className="bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">
-                commerce is here
+                for the AI era
               </span>
             </motion.h1>
 
-            <motion.p
+            <motion.h2
               variants={fadeUp}
               custom={0.1}
-              className="text-xl md:text-2xl text-gray-400 mb-12 max-w-3xl mx-auto leading-relaxed"
+              className="text-xl md:text-2xl text-gray-400 mb-12 max-w-3xl mx-auto leading-relaxed font-normal"
             >
               Enterprise-grade orchestration, merchant-owned tokenization, and AI-powered intelligence — unified in one platform for the world&apos;s leading merchants.
-            </motion.p>
+            </motion.h2>
 
             <motion.div
               variants={fadeUp}
@@ -427,9 +427,9 @@ export default function Home() {
                 key={i}
                 variants={fadeUp}
                 custom={i * 0.03}
-                className="py-6 px-4 border border-white/5 rounded-lg flex items-center justify-center"
+                className="py-6 px-4 bg-white/[0.04] border border-white/10 rounded-lg flex items-center justify-center hover:bg-white/[0.07] transition-colors"
               >
-                <span className="text-gray-500 text-sm font-medium">{client}</span>
+                <span className="text-gray-300 text-sm font-medium">{client}</span>
               </motion.div>
             ))}
           </motion.div>
@@ -459,6 +459,91 @@ export default function Home() {
                 <div className="text-sm text-gray-500">{metric.label}</div>
               </motion.div>
             ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ═══════════════════ FIVE PILLARS ═══════════════════ */}
+      <section className="py-32 border-t border-white/5">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            custom={0}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight">
+              Five pillars. <span className="bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">One unified platform.</span>
+            </h2>
+            <p className="text-lg text-gray-400 max-w-3xl mx-auto">
+              Everything you need to build, scale, and optimize enterprise payment operations — without managing multiple vendors or disparate data silos.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={{ visible: { transition: { staggerChildren: 0.08 } } }}
+            className="grid md:grid-cols-2 lg:grid-cols-5 gap-5"
+          >
+            {[
+              {
+                icon: Brain,
+                name: 'Payments Intelligence',
+                description: 'AI-powered analytics and optimization powered by Congrify. Real-time insights, fee analysis, and automated reconciliation.',
+              },
+              {
+                icon: Network,
+                name: 'Orchestration',
+                description: 'Smart routing across 200+ acquirers. Automatic failover, retry logic, and cost-optimized transaction flows.',
+              },
+              {
+                icon: Lock,
+                name: 'Tokenization',
+                description: 'Merchant-owned universal tokens that work across any PSP. Reduce PCI scope by 90% with full data portability.',
+              },
+              {
+                icon: ShieldCheck,
+                name: 'Fraud Management',
+                description: 'Configurable risk engine with 3DS authentication, behavioral analysis, and pre-chargeback alerts via Ethoca and Verifi.',
+              },
+              {
+                icon: Globe,
+                name: 'Connectors',
+                description: '200+ pre-built acquirer adapters and 300+ payment methods. Local acquiring across 40+ countries.',
+              },
+            ].map((pillar, i) => (
+              <motion.div
+                key={i}
+                variants={fadeUp}
+                custom={i * 0.05}
+                className="group"
+              >
+                <div className="h-full bg-white/[0.03] border border-white/10 rounded-2xl p-6 hover:bg-white/[0.06] hover:border-indigo-500/20 transition-all duration-300">
+                  <div className="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center mb-5 group-hover:bg-indigo-500/20 transition-colors">
+                    <pillar.icon className="w-5 h-5 text-indigo-400" />
+                  </div>
+                  <h3 className="text-base font-semibold text-white mb-2">{pillar.name}</h3>
+                  <p className="text-sm text-gray-500 leading-relaxed">{pillar.description}</p>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            custom={0.3}
+            className="text-center mt-12"
+          >
+            <Button href="/products" size="lg">
+              Explore all products <ArrowRight className="ml-2 w-5 h-5" />
+            </Button>
           </motion.div>
         </div>
       </section>
