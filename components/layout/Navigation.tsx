@@ -38,7 +38,7 @@ export default function Navigation() {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? 'bg-white/80 backdrop-blur-lg shadow-md'
+          ? 'bg-black/80 backdrop-blur-lg border-b border-white/5'
           : 'bg-transparent'
       }`}
     >
@@ -46,7 +46,7 @@ export default function Navigation() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
-            <div className="text-2xl font-bold bg-gradient-to-r from-[var(--deep-purple)] to-[var(--royal-blue)] bg-clip-text text-transparent">
+            <div className="text-xl font-bold text-white">
               IxoPay
             </div>
           </Link>
@@ -59,25 +59,25 @@ export default function Navigation() {
               onMouseEnter={() => setActiveDropdown('solutions')}
               onMouseLeave={() => setActiveDropdown(null)}
             >
-              <button className="flex items-center space-x-1 text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
+              <button className="flex items-center space-x-1 text-gray-400 hover:text-white transition-colors text-sm">
                 <span>Solutions</span>
-                <ChevronDown className="w-4 h-4" />
+                <ChevronDown className="w-3.5 h-3.5" />
               </button>
 
               <AnimatePresence>
                 {activeDropdown === 'solutions' && (
                   <motion.div
-                    initial={{ opacity: 0, y: 10 }}
+                    initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    transition={{ duration: 0.2 }}
-                    className="absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-[var(--border)] overflow-hidden"
+                    exit={{ opacity: 0, y: 8 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute top-full left-0 mt-2 w-56 bg-gray-900 rounded-lg border border-white/10 overflow-hidden shadow-2xl"
                   >
                     {navigation.solutions.map((item) => (
                       <Link
                         key={item.name}
                         href={item.href}
-                        className="block px-4 py-3 text-sm text-[var(--text-secondary)] hover:bg-[var(--surface)] hover:text-[var(--text-primary)] transition-colors"
+                        className="block px-4 py-3 text-sm text-gray-400 hover:bg-white/5 hover:text-white transition-colors"
                       >
                         {item.name}
                       </Link>
@@ -93,25 +93,25 @@ export default function Navigation() {
               onMouseEnter={() => setActiveDropdown('products')}
               onMouseLeave={() => setActiveDropdown(null)}
             >
-              <button className="flex items-center space-x-1 text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
+              <button className="flex items-center space-x-1 text-gray-400 hover:text-white transition-colors text-sm">
                 <span>Products</span>
-                <ChevronDown className="w-4 h-4" />
+                <ChevronDown className="w-3.5 h-3.5" />
               </button>
 
               <AnimatePresence>
                 {activeDropdown === 'products' && (
                   <motion.div
-                    initial={{ opacity: 0, y: 10 }}
+                    initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    transition={{ duration: 0.2 }}
-                    className="absolute top-full left-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-[var(--border)] overflow-hidden"
+                    exit={{ opacity: 0, y: 8 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute top-full left-0 mt-2 w-56 bg-gray-900 rounded-lg border border-white/10 overflow-hidden shadow-2xl"
                   >
                     {navigation.products.map((item) => (
                       <Link
                         key={item.name}
                         href={item.href}
-                        className="block px-4 py-3 text-sm text-[var(--text-secondary)] hover:bg-[var(--surface)] hover:text-[var(--text-primary)] transition-colors"
+                        className="block px-4 py-3 text-sm text-gray-400 hover:bg-white/5 hover:text-white transition-colors"
                       >
                         {item.name}
                       </Link>
@@ -122,15 +122,15 @@ export default function Navigation() {
             </div>
 
             <Link
-              href="/resources"
-              className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+              href="/docs"
+              className="text-gray-400 hover:text-white transition-colors text-sm"
             >
-              Resources
+              Docs
             </Link>
 
             <Link
               href="/contact"
-              className="px-6 py-2 rounded-lg bg-gradient-to-r from-[var(--deep-purple)] to-[var(--royal-blue)] text-white font-medium hover:scale-105 transition-transform"
+              className="px-4 py-2 rounded-lg bg-white text-black text-sm font-medium hover:bg-gray-200 transition-colors"
             >
               Contact Sales
             </Link>
@@ -138,7 +138,7 @@ export default function Navigation() {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden text-[var(--text-primary)]"
+            className="md:hidden text-white"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -153,18 +153,18 @@ export default function Navigation() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-            className="md:hidden bg-white border-t border-[var(--border)]"
+            transition={{ duration: 0.2 }}
+            className="md:hidden bg-black/95 backdrop-blur-lg border-t border-white/5"
           >
             <div className="px-4 py-6 space-y-4">
               <div>
-                <div className="font-semibold text-[var(--text-primary)] mb-2">Solutions</div>
+                <div className="font-medium text-white text-sm mb-2">Solutions</div>
                 <div className="pl-4 space-y-2">
                   {navigation.solutions.map((item) => (
                     <Link
                       key={item.name}
                       href={item.href}
-                      className="block text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+                      className="block text-sm text-gray-400 hover:text-white"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       {item.name}
@@ -174,13 +174,13 @@ export default function Navigation() {
               </div>
 
               <div>
-                <div className="font-semibold text-[var(--text-primary)] mb-2">Products</div>
+                <div className="font-medium text-white text-sm mb-2">Products</div>
                 <div className="pl-4 space-y-2">
                   {navigation.products.map((item) => (
                     <Link
                       key={item.name}
                       href={item.href}
-                      className="block text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+                      className="block text-sm text-gray-400 hover:text-white"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       {item.name}
@@ -190,16 +190,16 @@ export default function Navigation() {
               </div>
 
               <Link
-                href="/resources"
-                className="block text-[var(--text-primary)] hover:text-[var(--deep-purple)]"
+                href="/docs"
+                className="block text-sm text-gray-400 hover:text-white"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Resources
+                Docs
               </Link>
 
               <Link
                 href="/contact"
-                className="block w-full text-center px-6 py-3 rounded-lg bg-gradient-to-r from-[var(--deep-purple)] to-[var(--royal-blue)] text-white font-medium"
+                className="block w-full text-center px-4 py-3 rounded-lg bg-white text-black text-sm font-medium"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Contact Sales

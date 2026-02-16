@@ -40,19 +40,15 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-[var(--text-primary)] text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 mb-8">
-          {/* Product */}
+    <footer className="bg-black border-t border-white/5 text-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 mb-12">
           <div>
-            <h3 className="font-semibold mb-4">Product</h3>
-            <ul className="space-y-2">
+            <h3 className="text-sm font-medium text-white mb-4">Product</h3>
+            <ul className="space-y-3">
               {footerLinks.product.map((link) => (
                 <li key={link.name}>
-                  <Link
-                    href={link.href}
-                    className="text-gray-400 hover:text-white transition-colors text-sm"
-                  >
+                  <Link href={link.href} className="text-gray-500 hover:text-gray-300 transition-colors text-sm">
                     {link.name}
                   </Link>
                 </li>
@@ -60,16 +56,12 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Solutions */}
           <div>
-            <h3 className="font-semibold mb-4">Solutions</h3>
-            <ul className="space-y-2">
+            <h3 className="text-sm font-medium text-white mb-4">Solutions</h3>
+            <ul className="space-y-3">
               {footerLinks.solutions.map((link) => (
                 <li key={link.name}>
-                  <Link
-                    href={link.href}
-                    className="text-gray-400 hover:text-white transition-colors text-sm"
-                  >
+                  <Link href={link.href} className="text-gray-500 hover:text-gray-300 transition-colors text-sm">
                     {link.name}
                   </Link>
                 </li>
@@ -77,16 +69,12 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Developers */}
           <div>
-            <h3 className="font-semibold mb-4">Developers</h3>
-            <ul className="space-y-2">
+            <h3 className="text-sm font-medium text-white mb-4">Developers</h3>
+            <ul className="space-y-3">
               {footerLinks.developers.map((link) => (
                 <li key={link.name}>
-                  <Link
-                    href={link.href}
-                    className="text-gray-400 hover:text-white transition-colors text-sm"
-                  >
+                  <Link href={link.href} className="text-gray-500 hover:text-gray-300 transition-colors text-sm">
                     {link.name}
                   </Link>
                 </li>
@@ -94,16 +82,12 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Company */}
           <div>
-            <h3 className="font-semibold mb-4">Company</h3>
-            <ul className="space-y-2">
+            <h3 className="text-sm font-medium text-white mb-4">Company</h3>
+            <ul className="space-y-3">
               {footerLinks.company.map((link) => (
                 <li key={link.name}>
-                  <Link
-                    href={link.href}
-                    className="text-gray-400 hover:text-white transition-colors text-sm"
-                  >
+                  <Link href={link.href} className="text-gray-500 hover:text-gray-300 transition-colors text-sm">
                     {link.name}
                   </Link>
                 </li>
@@ -111,16 +95,12 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Resources */}
           <div>
-            <h3 className="font-semibold mb-4">Resources</h3>
-            <ul className="space-y-2">
+            <h3 className="text-sm font-medium text-white mb-4">Resources</h3>
+            <ul className="space-y-3">
               {footerLinks.resources.map((link) => (
                 <li key={link.name}>
-                  <Link
-                    href={link.href}
-                    className="text-gray-400 hover:text-white transition-colors text-sm"
-                  >
+                  <Link href={link.href} className="text-gray-500 hover:text-gray-300 transition-colors text-sm">
                     {link.name}
                   </Link>
                 </li>
@@ -128,16 +108,12 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Legal */}
           <div>
-            <h3 className="font-semibold mb-4">Legal</h3>
-            <ul className="space-y-2">
+            <h3 className="text-sm font-medium text-white mb-4">Legal</h3>
+            <ul className="space-y-3">
               {footerLinks.legal.map((link) => (
                 <li key={link.name}>
-                  <Link
-                    href={link.href}
-                    className="text-gray-400 hover:text-white transition-colors text-sm"
-                  >
+                  <Link href={link.href} className="text-gray-500 hover:text-gray-300 transition-colors text-sm">
                     {link.name}
                   </Link>
                 </li>
@@ -146,42 +122,38 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom Section */}
-        <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <div className="flex items-center space-x-2 mb-4 md:mb-0">
-            <div className="text-2xl font-bold bg-gradient-to-r from-[var(--electric-blue)] to-[var(--mint-green)] bg-clip-text text-transparent">
-              IxoPay
-            </div>
-            <span className="text-gray-400 text-sm">
-              © {new Date().getFullYear()} All rights reserved.
+        <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center">
+          <div className="flex items-center space-x-3 mb-4 md:mb-0">
+            <span className="text-sm font-medium text-white">IxoPay</span>
+            <span className="text-gray-600 text-sm">
+              &copy; {new Date().getFullYear()}
             </span>
           </div>
 
-          {/* Social Links */}
           <div className="flex space-x-6">
             <a
               href="https://twitter.com/ixopay"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-400 hover:text-white transition-colors"
+              className="text-gray-600 hover:text-gray-400 transition-colors"
             >
-              <Twitter className="w-5 h-5" />
+              <Twitter className="w-4 h-4" />
             </a>
             <a
               href="https://linkedin.com/company/ixopay"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-400 hover:text-white transition-colors"
+              className="text-gray-600 hover:text-gray-400 transition-colors"
             >
-              <Linkedin className="w-5 h-5" />
+              <Linkedin className="w-4 h-4" />
             </a>
             <a
               href="https://github.com/ixopay"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-400 hover:text-white transition-colors"
+              className="text-gray-600 hover:text-gray-400 transition-colors"
             >
-              <Github className="w-5 h-5" />
+              <Github className="w-4 h-4" />
             </a>
           </div>
         </div>
