@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Shield, Zap, CheckCircle } from 'lucide-react';
+import { ArrowRight, Shield, Zap, CheckCircle, Globe, Lock, BarChart3, RefreshCw } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Button from '@/components/ui/Button';
 
@@ -14,88 +14,153 @@ const fadeUp = {
   }),
 };
 
-function CodeBlock() {
+/* ─── Animated routing flow visualization ─── */
+function RoutingFlow() {
+  const [activeRoute, setActiveRoute] = useState(0);
+
+  const routes = [
+    { region: 'Europe', card: 'Visa', psp: 'Adyen', reason: 'Highest approval rate for EU Visa', approved: true },
+    { region: 'North America', card: 'Amex', psp: 'Braintree', reason: 'Lowest fees for US Amex', approved: true },
+    { region: 'Asia Pacific', card: 'Mastercard', psp: 'Stripe', reason: 'Local acquiring in JP', approved: true },
+    { region: 'Europe', card: 'Mastercard', psp: 'Checkout.com', reason: 'Declined → auto-retry via Adyen', approved: false },
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveRoute((prev) => (prev + 1) % routes.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const r = routes[activeRoute];
+
   return (
-    <div className="code-block rounded-xl p-6 text-sm leading-relaxed overflow-hidden">
-      <div className="flex items-center gap-2 mb-4 pb-4 border-b border-white/5">
-        <div className="w-3 h-3 rounded-full bg-red-500/80" />
-        <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
-        <div className="w-3 h-3 rounded-full bg-green-500/80" />
-        <span className="ml-2 text-white/30 text-xs">Terminal</span>
+    <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-[#0a0b0f] p-6 md:p-8">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-8">
+        <span className="text-xs text-gray-500 uppercase tracking-widest font-medium">Smart Routing Engine</span>
+        <div className="flex items-center gap-1.5">
+          <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 pulse-subtle" />
+          <span className="text-emerald-400/80 text-[10px] font-medium">LIVE</span>
+        </div>
       </div>
-      <div className="space-y-1">
-        <p><span className="code-comment"># Create an intelligent payment</span></p>
-        <p>
-          <span className="text-white">curl </span>
-          <span className="code-url">https://api.ixopay.com/v1/transactions</span>
-          <span className="text-white"> \</span>
-        </p>
-        <p>
-          <span className="text-white">  </span>
-          <span className="code-flag">-H</span>
-          <span className="text-white"> </span>
-          <span className="code-string">&quot;Authorization: Bearer sk_live_...&quot;</span>
-          <span className="text-white"> \</span>
-        </p>
-        <p>
-          <span className="text-white">  </span>
-          <span className="code-flag">-d</span>
-          <span className="text-white"> amount</span>
-          <span className="text-white">=</span>
-          <span className="code-keyword">4999</span>
-          <span className="text-white"> \</span>
-        </p>
-        <p>
-          <span className="text-white">  </span>
-          <span className="code-flag">-d</span>
-          <span className="text-white"> currency</span>
-          <span className="text-white">=</span>
-          <span className="code-string">eur</span>
-          <span className="text-white"> \</span>
-        </p>
-        <p>
-          <span className="text-white">  </span>
-          <span className="code-flag">-d</span>
-          <span className="text-white"> routing</span>
-          <span className="text-white">=</span>
-          <span className="code-string">intelligent</span>
-        </p>
-        <p className="mt-4">
-          <span className="code-comment"># Response — routed to optimal PSP in 47ms</span>
-        </p>
-        <p><span className="text-white">{'{'}</span></p>
-        <p><span className="text-white">  </span><span className="code-flag">&quot;id&quot;</span><span className="text-white">: </span><span className="code-string">&quot;txn_8f2a...&quot;</span><span className="text-white">,</span></p>
-        <p><span className="text-white">  </span><span className="code-flag">&quot;status&quot;</span><span className="text-white">: </span><span className="code-string">&quot;approved&quot;</span><span className="text-white">,</span></p>
-        <p><span className="text-white">  </span><span className="code-flag">&quot;psp&quot;</span><span className="text-white">: </span><span className="code-string">&quot;adyen_eu&quot;</span><span className="text-white">,</span></p>
-        <p><span className="text-white">  </span><span className="code-flag">&quot;latency_ms&quot;</span><span className="text-white">: </span><span className="code-keyword">47</span><span className="text-white">,</span></p>
-        <p><span className="text-white">  </span><span className="code-flag">&quot;routing_reason&quot;</span><span className="text-white">: </span><span className="code-string">&quot;highest approval rate for DE Visa&quot;</span></p>
-        <p><span className="text-white">{'}'}</span><span className="terminal-cursor text-white">▋</span></p>
+
+      {/* Flow visualization */}
+      <div className="flex items-center justify-between gap-3 mb-8">
+        {/* Step 1: Transaction */}
+        <div className="flex-1 bg-white/[0.04] border border-white/10 rounded-xl p-4 text-center">
+          <div className="text-[10px] text-gray-500 uppercase tracking-wider mb-2">Transaction</div>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeRoute}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.25 }}
+            >
+              <div className="text-sm font-medium text-white">{r.card}</div>
+              <div className="text-xs text-gray-500">{r.region}</div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        {/* Arrow */}
+        <motion.div
+          key={`arrow1-${activeRoute}`}
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ duration: 0.4, delay: 0.2 }}
+          className="hidden sm:block w-12 h-px bg-gradient-to-r from-indigo-500/60 to-indigo-500/20 origin-left"
+        />
+
+        {/* Step 2: IxoPay AI */}
+        <div className="flex-1 bg-indigo-500/10 border border-indigo-500/20 rounded-xl p-4 text-center">
+          <div className="text-[10px] text-indigo-400 uppercase tracking-wider mb-2">IxoPay AI</div>
+          <div className="text-sm font-medium text-white">50+ signals</div>
+          <div className="text-xs text-gray-500">analyzed</div>
+        </div>
+
+        {/* Arrow */}
+        <motion.div
+          key={`arrow2-${activeRoute}`}
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ duration: 0.4, delay: 0.5 }}
+          className="hidden sm:block w-12 h-px bg-gradient-to-r from-indigo-500/60 to-emerald-500/20 origin-left"
+        />
+
+        {/* Step 3: Optimal PSP */}
+        <div className="flex-1 bg-white/[0.04] border border-white/10 rounded-xl p-4 text-center">
+          <div className="text-[10px] text-gray-500 uppercase tracking-wider mb-2">Routed To</div>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeRoute}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.25, delay: 0.6 }}
+            >
+              <div className="text-sm font-medium text-white">{r.psp}</div>
+              <div className={`text-xs ${r.approved ? 'text-emerald-400' : 'text-amber-400'}`}>
+                {r.approved ? 'Approved' : 'Retrying...'}
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </div>
+
+      {/* Reason bar */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={activeRoute}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3, delay: 0.7 }}
+          className="flex items-center gap-2 px-4 py-2.5 bg-white/[0.03] rounded-lg border border-white/5"
+        >
+          <RefreshCw className="w-3 h-3 text-indigo-400 flex-shrink-0" />
+          <span className="text-xs text-gray-400">{r.reason}</span>
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Progress dots */}
+      <div className="flex justify-center gap-1.5 mt-6">
+        {routes.map((_, i) => (
+          <div
+            key={i}
+            className={`w-1.5 h-1.5 rounded-full transition-colors ${
+              i === activeRoute ? 'bg-indigo-400' : 'bg-white/10'
+            }`}
+          />
+        ))}
       </div>
     </div>
   );
 }
 
-const transactions = [
+/* ─── Animated live dashboard ─── */
+const txnData = [
   { id: 'txn_9f3b', amount: '€249.00', card: 'Visa •••• 4242', region: 'DE', psp: 'Adyen', status: 'approved', latency: '34ms' },
   { id: 'txn_7a1c', amount: '£89.99', card: 'MC •••• 8521', region: 'UK', psp: 'Stripe', status: 'approved', latency: '52ms' },
-  { id: 'txn_2d8e', amount: '$1,200.00', card: 'Amex •••• 1003', region: 'US', psp: 'Braintree', status: 'approved', latency: '41ms' },
+  { id: 'txn_2d8e', amount: '$1,200', card: 'Amex •••• 1003', region: 'US', psp: 'Braintree', status: 'approved', latency: '41ms' },
   { id: 'txn_5k2f', amount: '€67.50', card: 'Visa •••• 9187', region: 'FR', psp: 'Adyen', status: 'approved', latency: '29ms' },
   { id: 'txn_8m4a', amount: '$430.00', card: 'MC •••• 3344', region: 'US', psp: 'Checkout', status: 'declined', latency: '61ms' },
-  { id: 'txn_8m4a', amount: '$430.00', card: 'MC •••• 3344', region: 'US', psp: 'Stripe', status: 'approved', latency: '38ms' },
+  { id: 'txn_8m4b', amount: '$430.00', card: 'MC •••• 3344', region: 'US', psp: 'Stripe', status: 'approved', latency: '38ms' },
   { id: 'txn_1p7g', amount: '¥15,800', card: 'Visa •••• 6601', region: 'JP', psp: 'Adyen', status: 'approved', latency: '47ms' },
-  { id: 'txn_3q9h', amount: 'A$320.00', card: 'Visa •••• 2290', region: 'AU', psp: 'Stripe', status: 'approved', latency: '55ms' },
+  { id: 'txn_3q9h', amount: 'A$320', card: 'Visa •••• 2290', region: 'AU', psp: 'Stripe', status: 'approved', latency: '55ms' },
 ];
 
 function LiveDashboard() {
-  const [visibleTxns, setVisibleTxns] = useState(0);
-  const [approvalRate, setApprovalRate] = useState(94.2);
+  const [tick, setTick] = useState(0);
+  const [approvalRate, setApprovalRate] = useState(96.2);
   const [volume, setVolume] = useState(2847);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setVisibleTxns((prev) => (prev + 1) % transactions.length);
+      setTick((prev) => (prev + 1) % txnData.length);
       setApprovalRate((prev) => {
-        const delta = (Math.random() - 0.3) * 0.4;
+        const delta = (Math.random() - 0.3) * 0.3;
         return Math.min(99.9, Math.max(96.0, prev + delta));
       });
       setVolume((prev) => prev + Math.floor(Math.random() * 12) + 3);
@@ -103,23 +168,17 @@ function LiveDashboard() {
     return () => clearInterval(interval);
   }, []);
 
-  const displayedTxns = [];
+  const displayed = [];
   for (let i = 0; i < 5; i++) {
-    displayedTxns.push(transactions[(visibleTxns + i) % transactions.length]);
+    displayed.push(txnData[(tick + i) % txnData.length]);
   }
 
   const barHeights = [65, 72, 58, 80, 75, 88, 82, 91, 85, 78, 92, 87];
 
   return (
-    <div className="relative rounded-xl overflow-hidden border border-white/10 bg-[#0a0b0f]">
-      {/* Window chrome */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-white/5 bg-white/[0.02]">
-        <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded-full bg-red-500/80" />
-          <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
-          <div className="w-3 h-3 rounded-full bg-green-500/80" />
-          <span className="ml-2 text-white/30 text-xs">IxoPay Dashboard</span>
-        </div>
+    <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-[#0a0b0f]">
+      <div className="flex items-center justify-between px-5 py-3 border-b border-white/5 bg-white/[0.02]">
+        <span className="text-xs text-gray-500 uppercase tracking-widest font-medium">Payment Analytics</span>
         <div className="flex items-center gap-1.5">
           <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 pulse-subtle" />
           <span className="text-emerald-400/80 text-[10px] font-medium">LIVE</span>
@@ -127,7 +186,7 @@ function LiveDashboard() {
       </div>
 
       <div className="p-5">
-        {/* Top stats row */}
+        {/* Stats */}
         <div className="grid grid-cols-3 gap-4 mb-5">
           <div className="bg-white/[0.03] rounded-lg p-3 border border-white/5">
             <div className="text-[10px] text-gray-500 uppercase tracking-wider mb-1">Approval Rate</div>
@@ -138,12 +197,12 @@ function LiveDashboard() {
             <div className="text-xl font-bold text-white tabular-nums">{volume.toLocaleString()}</div>
           </div>
           <div className="bg-white/[0.03] rounded-lg p-3 border border-white/5">
-            <div className="text-[10px] text-gray-500 uppercase tracking-wider mb-1">Avg Latency</div>
-            <div className="text-xl font-bold text-white">42ms</div>
+            <div className="text-[10px] text-gray-500 uppercase tracking-wider mb-1">Revenue Saved</div>
+            <div className="text-xl font-bold text-white">$48.2K</div>
           </div>
         </div>
 
-        {/* Mini bar chart */}
+        {/* Mini chart */}
         <div className="bg-white/[0.03] rounded-lg p-3 border border-white/5 mb-5">
           <div className="flex items-end justify-between h-16 gap-1">
             {barHeights.map((h, i) => (
@@ -151,7 +210,8 @@ function LiveDashboard() {
                 key={i}
                 className="flex-1 rounded-sm bg-indigo-500/60"
                 initial={{ height: 0 }}
-                animate={{ height: `${h}%` }}
+                whileInView={{ height: `${h}%` }}
+                viewport={{ once: true }}
                 transition={{ duration: 0.8, delay: i * 0.05, ease: 'easeOut' }}
               />
             ))}
@@ -163,33 +223,31 @@ function LiveDashboard() {
         </div>
 
         {/* Transaction feed */}
-        <div className="space-y-0">
-          <div className="grid grid-cols-[1fr_80px_40px_70px_60px_50px] gap-2 px-2 py-1.5 text-[9px] text-gray-600 uppercase tracking-wider border-b border-white/5">
+        <div>
+          <div className="grid grid-cols-[1fr_70px_36px_70px_58px] gap-2 px-2 py-1.5 text-[9px] text-gray-600 uppercase tracking-wider border-b border-white/5">
             <span>Transaction</span>
             <span>Amount</span>
-            <span>Region</span>
-            <span>PSP</span>
+            <span>Rgn</span>
+            <span>Provider</span>
             <span>Status</span>
-            <span className="text-right">Latency</span>
           </div>
           <AnimatePresence mode="popLayout">
-            {displayedTxns.map((txn, i) => (
+            {displayed.map((txn, i) => (
               <motion.div
-                key={`${txn.id}-${visibleTxns}-${i}`}
+                key={`${txn.id}-${tick}-${i}`}
                 initial={{ opacity: 0, y: -8 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 8 }}
                 transition={{ duration: 0.3, delay: i * 0.04 }}
-                className="grid grid-cols-[1fr_80px_40px_70px_60px_50px] gap-2 px-2 py-2 text-xs border-b border-white/[0.03] hover:bg-white/[0.02]"
+                className="grid grid-cols-[1fr_70px_36px_70px_58px] gap-2 px-2 py-2 text-[11px] border-b border-white/[0.03]"
               >
-                <span className="text-gray-400 font-mono text-[11px]">{txn.id}</span>
-                <span className="text-white font-medium text-[11px]">{txn.amount}</span>
-                <span className="text-gray-500 text-[11px]">{txn.region}</span>
-                <span className="text-gray-400 text-[11px]">{txn.psp}</span>
-                <span className={`text-[11px] font-medium ${txn.status === 'approved' ? 'text-emerald-400' : 'text-red-400'}`}>
+                <span className="text-gray-400 font-mono">{txn.id}</span>
+                <span className="text-white font-medium">{txn.amount}</span>
+                <span className="text-gray-500">{txn.region}</span>
+                <span className="text-gray-400">{txn.psp}</span>
+                <span className={`font-medium ${txn.status === 'approved' ? 'text-emerald-400' : 'text-amber-400'}`}>
                   {txn.status === 'approved' ? 'Approved' : 'Retry →'}
                 </span>
-                <span className="text-gray-500 text-right text-[11px] tabular-nums">{txn.latency}</span>
               </motion.div>
             ))}
           </AnimatePresence>
@@ -199,64 +257,100 @@ function LiveDashboard() {
   );
 }
 
+/* ─── Orchestration flow visual ─── */
+function OrchestrationVisual() {
+  const steps = [
+    { label: 'Checkout', sublabel: 'Web / App / Agent' },
+    { label: 'Tokenize', sublabel: 'PCI-free capture' },
+    { label: 'Risk Check', sublabel: '3DS & fraud rules' },
+    { label: 'Smart Route', sublabel: 'AI-optimized' },
+    { label: 'Process', sublabel: '200+ acquirers' },
+    { label: 'Reconcile', sublabel: 'Auto-matched' },
+  ];
+
+  return (
+    <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-[#0a0b0f] p-6 md:p-8">
+      <div className="flex items-center justify-between mb-8">
+        <span className="text-xs text-gray-500 uppercase tracking-widest font-medium">Transaction Lifecycle</span>
+      </div>
+
+      <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
+        {steps.map((step, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: i * 0.1 }}
+            className="relative"
+          >
+            <div className="bg-white/[0.04] border border-white/10 rounded-xl p-3 text-center hover:border-indigo-500/30 transition-colors">
+              <div className="w-8 h-8 rounded-full bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center mx-auto mb-2">
+                <span className="text-xs font-bold text-indigo-400">{i + 1}</span>
+              </div>
+              <div className="text-xs font-medium text-white mb-0.5">{step.label}</div>
+              <div className="text-[10px] text-gray-500">{step.sublabel}</div>
+            </div>
+            {i < steps.length - 1 && (
+              <motion.div
+                initial={{ scaleX: 0 }}
+                whileInView={{ scaleX: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.3, delay: 0.1 + i * 0.1 }}
+                className="hidden md:block absolute top-1/2 -right-3 w-3 h-px bg-white/10 origin-left"
+              />
+            )}
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ─── Main Page ─── */
 export default function Home() {
   const [activeTab, setActiveTab] = useState(0);
 
-  const features = [
+  const pillars = [
     {
-      tab: 'Intelligent Routing',
-      headline: 'Every transaction finds its optimal path',
+      tab: 'Orchestration',
+      headline: 'One integration. Infinite payment possibilities.',
       description:
-        'Our AI evaluates 50+ signals per transaction — card BIN, issuer patterns, time-of-day, historical approval rates — and routes to the PSP most likely to approve, in under 100ms.',
+        'Orchestrate your entire global payment stack through a single platform. Smart routing forwards each transaction to the best-suited provider based on card data, geography, risk classification, and cost — increasing conversions and reducing fees automatically.',
       stats: [
-        { value: '+23%', label: 'Approval rates' },
-        { value: '<100ms', label: 'Routing latency' },
-        { value: '200+', label: 'PSP connectors' },
+        { value: '200+', label: 'Acquirers connected' },
+        { value: '300+', label: 'Payment methods' },
+        { value: '+14%', label: 'Revenue recovered' },
       ],
     },
     {
-      tab: 'Merchant-Owned Data',
-      headline: 'Your tokens. Your data. Zero lock-in.',
+      tab: 'Tokenization',
+      headline: 'Own your payment data. Break free from lock-in.',
       description:
-        'Universal tokenization that lives above any PSP. Switch providers without re-tokenizing a single card. Your customer data stays yours — portable, secure, and fully under your control.',
+        'Our universal tokenization layer sits above any PSP, giving you total control over customer payment data. Switch or add providers without re-tokenizing a single card. Reduce PCI scope by 90% while maintaining full data portability across every channel.',
       stats: [
-        { value: '100%', label: 'Data portability' },
-        { value: '<24hrs', label: 'PSP migration' },
         { value: '90%', label: 'PCI scope reduction' },
+        { value: '100%', label: 'Data portability' },
+        { value: '<24hrs', label: 'PSP migration time' },
       ],
     },
     {
-      tab: 'Fraud Intelligence',
-      headline: 'Catch fraud without blocking revenue',
+      tab: 'AI Intelligence',
+      headline: 'Turn payment data into actionable growth.',
       description:
-        'Neural networks trained on billions of transactions detect fraud patterns while reducing false declines by 60%. Protect revenue, not just against losses.',
+        'Powered by Congrify, our AI engine unifies data from every PSP into a single source of truth. Real-time analytics, AI-driven recommendations, automated reconciliation, and fee intelligence — so your payments team sees everything and optimizes continuously.',
       stats: [
-        { value: '99.8%', label: 'Detection accuracy' },
-        { value: '-60%', label: 'False declines' },
-        { value: '$12M+', label: 'Fraud prevented' },
+        { value: '+23%', label: 'Approval rate lift' },
+        { value: '-32%', label: 'Processing costs' },
+        { value: 'Real-time', label: 'Anomaly detection' },
       ],
-    },
-  ];
-
-  const showcases = [
-    {
-      headline: 'One API. 200+ payment providers.',
-      description:
-        'A single integration connects you to every major PSP, acquirer, and payment method globally. Add new providers in hours, not months. No vendor lock-in, ever.',
-      visual: 'code',
-    },
-    {
-      headline: 'See the intelligence at work.',
-      description:
-        'Every transaction is routed, retried, and optimized in real time. Your team gets full visibility into every decision — which PSP was chosen, why, and what happened next.',
-      visual: 'dashboard',
     },
   ];
 
   return (
     <div className="min-h-screen bg-black">
 
-      {/* ===================== HERO ===================== */}
+      {/* ═══════════════════ HERO ═══════════════════ */}
       <section className="relative min-h-screen flex items-center justify-center pt-16">
         <div className="absolute inset-0 hero-gradient" />
 
@@ -264,19 +358,17 @@ export default function Home() {
           <motion.div
             initial="hidden"
             animate="visible"
-            variants={{
-              visible: { transition: { staggerChildren: 0.12 } },
-            }}
+            variants={{ visible: { transition: { staggerChildren: 0.12 } } }}
           >
             <motion.h1
               variants={fadeUp}
               custom={0}
               className="text-5xl md:text-7xl lg:text-[5.5rem] font-bold text-white mb-8 leading-[1.08] tracking-tight"
             >
-              Payment infrastructure
+              The era of agentic
               <br />
               <span className="bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">
-                for the AI era
+                commerce is here
               </span>
             </motion.h1>
 
@@ -285,7 +377,7 @@ export default function Home() {
               custom={0.1}
               className="text-xl md:text-2xl text-gray-400 mb-12 max-w-3xl mx-auto leading-relaxed"
             >
-              Intelligent routing, merchant-owned tokenization, and autonomous optimization — so every transaction drives revenue.
+              Enterprise-grade orchestration, merchant-owned tokenization, and AI-powered intelligence — unified in one platform for the world&apos;s leading merchants.
             </motion.p>
 
             <motion.div
@@ -294,22 +386,57 @@ export default function Home() {
               className="flex flex-col sm:flex-row gap-4 justify-center"
             >
               <Button href="/contact" size="lg">
-                Start with IxoPay <ArrowRight className="ml-2 w-5 h-5" />
+                Talk to our experts <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
               <Button
-                href="/products"
+                href="/solutions"
                 variant="secondary"
                 size="lg"
                 className="bg-white/5 border-white/10 text-white hover:bg-white/10 border"
               >
-                Read the docs
+                Explore solutions
               </Button>
             </motion.div>
           </motion.div>
         </div>
       </section>
 
-      {/* ===================== METRICS ===================== */}
+      {/* ═══════════════════ TRUSTED BY ═══════════════════ */}
+      <section className="py-20 border-t border-white/5">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.p
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            custom={0}
+            className="text-sm text-gray-600 text-center mb-10 uppercase tracking-widest font-medium"
+          >
+            Trusted by 700+ leading global merchants &amp; fintechs
+          </motion.p>
+
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={{ visible: { transition: { staggerChildren: 0.06 } } }}
+            className="grid grid-cols-3 md:grid-cols-6 gap-6"
+          >
+            {['Delivery Hero', 'eToro', 'Flix', 'Grover', 'Marley Spoon', 'Kriptomat'].map((client, i) => (
+              <motion.div
+                key={i}
+                variants={fadeUp}
+                custom={i * 0.03}
+                className="py-6 px-4 border border-white/5 rounded-lg flex items-center justify-center"
+              >
+                <span className="text-gray-500 text-sm font-medium">{client}</span>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ═══════════════════ METRICS ═══════════════════ */}
       <section className="py-24 border-t border-white/5">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
@@ -320,10 +447,10 @@ export default function Home() {
             className="grid grid-cols-2 md:grid-cols-4 gap-12"
           >
             {[
-              { value: '$50B+', label: 'Processed annually' },
-              { value: '99.999%', label: 'Uptime SLA' },
-              { value: '200+', label: 'PSP connectors' },
-              { value: '150+', label: 'Enterprise clients' },
+              { value: '$40B+', label: 'Processed to date' },
+              { value: '700+', label: 'Merchants & fintechs' },
+              { value: '200+', label: 'Acquirers connected' },
+              { value: '300+', label: 'Payment methods' },
             ].map((metric, i) => (
               <motion.div key={i} variants={fadeUp} custom={i * 0.05} className="text-center">
                 <div className="text-4xl md:text-5xl font-bold text-white mb-2 tracking-tight">
@@ -336,7 +463,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ===================== TABBED PRODUCT SHOWCASE ===================== */}
+      {/* ═══════════════════ THREE PILLARS — TABBED ═══════════════════ */}
       <section className="py-32 border-t border-white/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
@@ -348,26 +475,24 @@ export default function Home() {
             className="mb-16"
           >
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 tracking-tight">
-              Built for how payments actually work
+              The full-stack advantage
             </h2>
             <p className="text-lg text-gray-400 max-w-2xl">
-              Three capabilities that compound. Each one drives measurable impact on its own — together, they transform payments from a cost center into a growth engine.
+              Why settle for best-of-breed when you can have a unified platform? Orchestration, tokenization, and AI intelligence — integrated to remove complexity and eliminate data silos.
             </p>
           </motion.div>
 
           {/* Tabs */}
           <div className="flex gap-1 mb-12 border-b border-white/10">
-            {features.map((feature, i) => (
+            {pillars.map((pillar, i) => (
               <button
                 key={i}
                 onClick={() => setActiveTab(i)}
                 className={`px-6 py-3 text-sm font-medium transition-colors relative ${
-                  activeTab === i
-                    ? 'text-white'
-                    : 'text-gray-500 hover:text-gray-300'
+                  activeTab === i ? 'text-white' : 'text-gray-500 hover:text-gray-300'
                 }`}
               >
-                {feature.tab}
+                {pillar.tab}
                 {activeTab === i && (
                   <motion.div
                     layoutId="activeTab"
@@ -389,13 +514,13 @@ export default function Home() {
           >
             <div>
               <h3 className="text-3xl md:text-4xl font-bold text-white mb-6 tracking-tight">
-                {features[activeTab].headline}
+                {pillars[activeTab].headline}
               </h3>
               <p className="text-lg text-gray-400 mb-10 leading-relaxed">
-                {features[activeTab].description}
+                {pillars[activeTab].description}
               </p>
               <div className="grid grid-cols-3 gap-8">
-                {features[activeTab].stats.map((stat, i) => (
+                {pillars[activeTab].stats.map((stat, i) => (
                   <div key={i}>
                     <div className="text-2xl font-bold text-white mb-1">{stat.value}</div>
                     <div className="text-xs text-gray-500">{stat.label}</div>
@@ -405,90 +530,121 @@ export default function Home() {
             </div>
 
             <div>
-              <CodeBlock />
+              {activeTab === 0 && <RoutingFlow />}
+              {activeTab === 1 && <OrchestrationVisual />}
+              {activeTab === 2 && <LiveDashboard />}
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* ===================== FEATURE SHOWCASES (alternating) ===================== */}
-      {showcases.map((showcase, i) => (
-        <section key={i} className="py-32 border-t border-white/5">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
-              className={`grid lg:grid-cols-2 gap-16 items-center ${
-                i % 2 === 1 ? 'lg:[direction:rtl]' : ''
-              }`}
-            >
-              <motion.div variants={fadeUp} custom={0} className={i % 2 === 1 ? 'lg:[direction:ltr]' : ''}>
-                <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 tracking-tight">
-                  {showcase.headline}
-                </h2>
-                <p className="text-lg text-gray-400 leading-relaxed mb-8">
-                  {showcase.description}
-                </p>
-                <Button href={i === 0 ? '/docs' : '/contact'} variant="ghost" className="text-indigo-400 hover:text-indigo-300 p-0">
-                  {i === 0 ? 'Explore the API' : 'Request a demo'} <ArrowRight className="ml-2 w-4 h-4" />
-                </Button>
-              </motion.div>
-
-              <motion.div variants={fadeUp} custom={0.15} className={i % 2 === 1 ? 'lg:[direction:ltr]' : ''}>
-                {showcase.visual === 'code' ? <CodeBlock /> : showcase.visual === 'dashboard' ? <LiveDashboard /> : null}
-              </motion.div>
-            </motion.div>
-          </div>
-        </section>
-      ))}
-
-      {/* ===================== SOCIAL PROOF ===================== */}
+      {/* ═══════════════════ HOW IT WORKS — ORCHESTRATION FLOW ═══════════════════ */}
       <section className="py-32 border-t border-white/5">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
+            className="grid lg:grid-cols-2 gap-16 items-center"
+          >
+            <motion.div variants={fadeUp} custom={0}>
+              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 tracking-tight">
+                Every transaction, optimized end-to-end
+              </h2>
+              <p className="text-lg text-gray-400 leading-relaxed mb-8">
+                From checkout to settlement, IxoPay orchestrates every step. Route to the best-suited provider, retry declined transactions automatically, reconcile across all PSPs in a single dashboard — and analyze it all with AI.
+              </p>
+
+              <div className="space-y-4">
+                {[
+                  { icon: Zap, text: 'Smart routing with automatic failover and retry' },
+                  { icon: Lock, text: 'PCI-compliant tokenization at every touchpoint' },
+                  { icon: BarChart3, text: 'Consolidated reporting across all providers' },
+                  { icon: Globe, text: 'Local acquiring in 40+ countries' },
+                ].map((item, i) => (
+                  <motion.div
+                    key={i}
+                    variants={fadeUp}
+                    custom={0.1 + i * 0.05}
+                    className="flex items-center gap-3"
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/10 flex items-center justify-center flex-shrink-0">
+                      <item.icon className="w-4 h-4 text-indigo-400" />
+                    </div>
+                    <span className="text-sm text-gray-400">{item.text}</span>
+                  </motion.div>
+                ))}
+              </div>
+
+              <div className="mt-8">
+                <Button href="/products" variant="ghost" className="text-indigo-400 hover:text-indigo-300 p-0">
+                  Explore the platform <ArrowRight className="ml-2 w-4 h-4" />
+                </Button>
+              </div>
+            </motion.div>
+
+            <motion.div variants={fadeUp} custom={0.15}>
+              <LiveDashboard />
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ═══════════════════ AGENTIC COMMERCE CTA ═══════════════════ */}
+      <section className="py-32 border-t border-white/5">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
+            className="grid lg:grid-cols-2 gap-16 items-center lg:[direction:rtl]"
+          >
+            <motion.div variants={fadeUp} custom={0} className="lg:[direction:ltr]">
+              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 tracking-tight">
+                The future is agentic. Are you ready?
+              </h2>
+              <p className="text-lg text-gray-400 leading-relaxed mb-8">
+                As commerce shifts from clicks to AI agents, your infrastructure must be protocol-agnostic. IxoPay acts as the neutral trust layer — orchestrating identity and value across the fragmenting landscape of AI agent protocols with merchant-owned tokens that work everywhere.
+              </p>
+              <Button href="/contact" variant="ghost" className="text-indigo-400 hover:text-indigo-300 p-0">
+                Learn about agentic commerce <ArrowRight className="ml-2 w-4 h-4" />
+              </Button>
+            </motion.div>
+
+            <motion.div variants={fadeUp} custom={0.15} className="lg:[direction:ltr]">
+              <RoutingFlow />
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ═══════════════════ TESTIMONIAL ═══════════════════ */}
+      <section className="py-24 border-t border-white/5">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
           >
-            <motion.p variants={fadeUp} custom={0} className="text-sm font-medium text-gray-500 uppercase tracking-widest mb-12">
-              Trusted by enterprises worldwide
-            </motion.p>
-
-            <motion.div variants={fadeUp} custom={0.1} className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-20">
-              {['Fortune 500 Retailer', 'Global Marketplace', 'Leading Travel Co.', 'Top 10 FinTech'].map(
-                (client, i) => (
-                  <div
-                    key={i}
-                    className="py-8 px-6 border border-white/5 rounded-lg flex items-center justify-center"
-                  >
-                    <span className="text-gray-500 text-sm font-medium">{client}</span>
-                  </div>
-                )
-              )}
-            </motion.div>
-
-            <motion.div variants={fadeUp} custom={0.2} className="grid md:grid-cols-3 gap-16">
-              {[
-                { value: '$50B+', label: 'Annual transaction volume' },
-                { value: '99.999%', label: 'Guaranteed uptime' },
-                { value: '150+', label: 'Enterprise clients globally' },
-              ].map((stat, i) => (
-                <div key={i}>
-                  <div className="text-5xl md:text-6xl font-bold text-white mb-3 tracking-tight">
-                    {stat.value}
-                  </div>
-                  <p className="text-gray-500">{stat.label}</p>
-                </div>
-              ))}
+            <motion.blockquote
+              variants={fadeUp}
+              custom={0}
+              className="text-2xl md:text-3xl text-white font-medium leading-relaxed mb-8"
+            >
+              &ldquo;Working with AI Payment Intelligence has allowed us to achieve full data control very quickly, without technical effort. It&apos;s a key part of improving our payment management and operations.&rdquo;
+            </motion.blockquote>
+            <motion.div variants={fadeUp} custom={0.1}>
+              <p className="text-sm text-gray-400 font-medium">Dennis Kohler</p>
+              <p className="text-sm text-gray-600">Senior Head of Global Payments &amp; Fraud, Flix</p>
             </motion.div>
           </motion.div>
         </div>
       </section>
 
-      {/* ===================== FINAL CTA ===================== */}
+      {/* ═══════════════════ FINAL CTA ═══════════════════ */}
       <section className="py-32 border-t border-white/5 relative">
         <div className="absolute inset-0 hero-gradient opacity-50" />
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
@@ -511,7 +667,7 @@ export default function Home() {
             </motion.h2>
 
             <motion.p variants={fadeUp} custom={0.1} className="text-xl text-gray-400 mb-12 max-w-2xl mx-auto">
-              Join the enterprises using AI-powered payment intelligence to recover revenue, cut costs, and scale globally.
+              Join 700+ enterprises using IxoPay to simplify, secure, and scale their global payment operations.
             </motion.p>
 
             <motion.div variants={fadeUp} custom={0.2} className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
@@ -534,7 +690,7 @@ export default function Home() {
               className="flex flex-col sm:flex-row items-center justify-center gap-8 text-sm text-gray-500"
             >
               {[
-                { icon: Shield, text: 'SOC 2 Type II & PCI DSS Level 1' },
+                { icon: Shield, text: 'PCI DSS Level 1 certified' },
                 { icon: Zap, text: '24/7 enterprise support' },
                 { icon: CheckCircle, text: 'White-glove onboarding' },
               ].map((item, i) => (
