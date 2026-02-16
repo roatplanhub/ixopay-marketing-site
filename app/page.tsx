@@ -1,8 +1,8 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Shield, Zap, CheckCircle } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Button from '@/components/ui/Button';
 
 const fadeUp = {
@@ -75,25 +75,126 @@ function CodeBlock() {
   );
 }
 
-function ProductVideo() {
+const transactions = [
+  { id: 'txn_9f3b', amount: '€249.00', card: 'Visa •••• 4242', region: 'DE', psp: 'Adyen', status: 'approved', latency: '34ms' },
+  { id: 'txn_7a1c', amount: '£89.99', card: 'MC •••• 8521', region: 'UK', psp: 'Stripe', status: 'approved', latency: '52ms' },
+  { id: 'txn_2d8e', amount: '$1,200.00', card: 'Amex •••• 1003', region: 'US', psp: 'Braintree', status: 'approved', latency: '41ms' },
+  { id: 'txn_5k2f', amount: '€67.50', card: 'Visa •••• 9187', region: 'FR', psp: 'Adyen', status: 'approved', latency: '29ms' },
+  { id: 'txn_8m4a', amount: '$430.00', card: 'MC •••• 3344', region: 'US', psp: 'Checkout', status: 'declined', latency: '61ms' },
+  { id: 'txn_8m4a', amount: '$430.00', card: 'MC •••• 3344', region: 'US', psp: 'Stripe', status: 'approved', latency: '38ms' },
+  { id: 'txn_1p7g', amount: '¥15,800', card: 'Visa •••• 6601', region: 'JP', psp: 'Adyen', status: 'approved', latency: '47ms' },
+  { id: 'txn_3q9h', amount: 'A$320.00', card: 'Visa •••• 2290', region: 'AU', psp: 'Stripe', status: 'approved', latency: '55ms' },
+];
+
+function LiveDashboard() {
+  const [visibleTxns, setVisibleTxns] = useState(0);
+  const [approvalRate, setApprovalRate] = useState(94.2);
+  const [volume, setVolume] = useState(2847);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setVisibleTxns((prev) => (prev + 1) % transactions.length);
+      setApprovalRate((prev) => {
+        const delta = (Math.random() - 0.3) * 0.4;
+        return Math.min(99.9, Math.max(96.0, prev + delta));
+      });
+      setVolume((prev) => prev + Math.floor(Math.random() * 12) + 3);
+    }, 2000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const displayedTxns = [];
+  for (let i = 0; i < 5; i++) {
+    displayedTxns.push(transactions[(visibleTxns + i) % transactions.length]);
+  }
+
+  const barHeights = [65, 72, 58, 80, 75, 88, 82, 91, 85, 78, 92, 87];
+
   return (
-    <div className="relative rounded-xl overflow-hidden border border-white/10 bg-gray-950">
-      <div className="flex items-center gap-2 px-4 py-3 border-b border-white/5 bg-white/[0.02]">
-        <div className="w-3 h-3 rounded-full bg-red-500/80" />
-        <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
-        <div className="w-3 h-3 rounded-full bg-green-500/80" />
-        <span className="ml-2 text-white/30 text-xs">IxoPay Dashboard</span>
+    <div className="relative rounded-xl overflow-hidden border border-white/10 bg-[#0a0b0f]">
+      {/* Window chrome */}
+      <div className="flex items-center justify-between px-4 py-3 border-b border-white/5 bg-white/[0.02]">
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 rounded-full bg-red-500/80" />
+          <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
+          <div className="w-3 h-3 rounded-full bg-green-500/80" />
+          <span className="ml-2 text-white/30 text-xs">IxoPay Dashboard</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 pulse-subtle" />
+          <span className="text-emerald-400/80 text-[10px] font-medium">LIVE</span>
+        </div>
       </div>
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        className="w-full aspect-video object-cover"
-        poster="/demo-poster.jpg"
-      >
-        <source src="/demo.mp4" type="video/mp4" />
-      </video>
+
+      <div className="p-5">
+        {/* Top stats row */}
+        <div className="grid grid-cols-3 gap-4 mb-5">
+          <div className="bg-white/[0.03] rounded-lg p-3 border border-white/5">
+            <div className="text-[10px] text-gray-500 uppercase tracking-wider mb-1">Approval Rate</div>
+            <div className="text-xl font-bold text-emerald-400 tabular-nums">{approvalRate.toFixed(1)}%</div>
+          </div>
+          <div className="bg-white/[0.03] rounded-lg p-3 border border-white/5">
+            <div className="text-[10px] text-gray-500 uppercase tracking-wider mb-1">Transactions</div>
+            <div className="text-xl font-bold text-white tabular-nums">{volume.toLocaleString()}</div>
+          </div>
+          <div className="bg-white/[0.03] rounded-lg p-3 border border-white/5">
+            <div className="text-[10px] text-gray-500 uppercase tracking-wider mb-1">Avg Latency</div>
+            <div className="text-xl font-bold text-white">42ms</div>
+          </div>
+        </div>
+
+        {/* Mini bar chart */}
+        <div className="bg-white/[0.03] rounded-lg p-3 border border-white/5 mb-5">
+          <div className="flex items-end justify-between h-16 gap-1">
+            {barHeights.map((h, i) => (
+              <motion.div
+                key={i}
+                className="flex-1 rounded-sm bg-indigo-500/60"
+                initial={{ height: 0 }}
+                animate={{ height: `${h}%` }}
+                transition={{ duration: 0.8, delay: i * 0.05, ease: 'easeOut' }}
+              />
+            ))}
+          </div>
+          <div className="flex justify-between mt-2">
+            <span className="text-[9px] text-gray-600">12:00</span>
+            <span className="text-[9px] text-gray-600">Now</span>
+          </div>
+        </div>
+
+        {/* Transaction feed */}
+        <div className="space-y-0">
+          <div className="grid grid-cols-[1fr_80px_40px_70px_60px_50px] gap-2 px-2 py-1.5 text-[9px] text-gray-600 uppercase tracking-wider border-b border-white/5">
+            <span>Transaction</span>
+            <span>Amount</span>
+            <span>Region</span>
+            <span>PSP</span>
+            <span>Status</span>
+            <span className="text-right">Latency</span>
+          </div>
+          <AnimatePresence mode="popLayout">
+            {displayedTxns.map((txn, i) => (
+              <motion.div
+                key={`${txn.id}-${visibleTxns}-${i}`}
+                initial={{ opacity: 0, y: -8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 8 }}
+                transition={{ duration: 0.3, delay: i * 0.04 }}
+                className="grid grid-cols-[1fr_80px_40px_70px_60px_50px] gap-2 px-2 py-2 text-xs border-b border-white/[0.03] hover:bg-white/[0.02]"
+              >
+                <span className="text-gray-400 font-mono text-[11px]">{txn.id}</span>
+                <span className="text-white font-medium text-[11px]">{txn.amount}</span>
+                <span className="text-gray-500 text-[11px]">{txn.region}</span>
+                <span className="text-gray-400 text-[11px]">{txn.psp}</span>
+                <span className={`text-[11px] font-medium ${txn.status === 'approved' ? 'text-emerald-400' : 'text-red-400'}`}>
+                  {txn.status === 'approved' ? 'Approved' : 'Retry →'}
+                </span>
+                <span className="text-gray-500 text-right text-[11px] tabular-nums">{txn.latency}</span>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </div>
+      </div>
     </div>
   );
 }
@@ -147,8 +248,8 @@ export default function Home() {
     {
       headline: 'See the intelligence at work.',
       description:
-        'Watch how IxoPay routes, optimizes, and protects transactions in real time. The dashboard gives your team full visibility into every decision the platform makes.',
-      visual: 'video',
+        'Every transaction is routed, retried, and optimized in real time. Your team gets full visibility into every decision — which PSP was chosen, why, and what happened next.',
+      visual: 'dashboard',
     },
   ];
 
@@ -336,7 +437,7 @@ export default function Home() {
               </motion.div>
 
               <motion.div variants={fadeUp} custom={0.15} className={i % 2 === 1 ? 'lg:[direction:ltr]' : ''}>
-                {showcase.visual === 'code' ? <CodeBlock /> : <ProductVideo />}
+                {showcase.visual === 'code' ? <CodeBlock /> : showcase.visual === 'dashboard' ? <LiveDashboard /> : null}
               </motion.div>
             </motion.div>
           </div>
